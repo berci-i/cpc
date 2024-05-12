@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { Inter } from "next/font/google";
-import ThreeScene from "@/components/Home/ThreeScene";
+import ThreeScene from "@/components/ThreeScene";
 import styles from "@/styles/Home.module.css";
 
 const inter = Inter({ subsets: ["latin"] });
