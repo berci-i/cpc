@@ -45,3 +45,4 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 1. pcd file not loaded (because I was calling renderer.render before?)
 2. LoaderType not reconnised (I found an example with @react-three)
 3. loading the pcd twice?
+image.png

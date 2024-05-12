@@ -7,6 +7,7 @@ import {PCDLoader} from "three/addons/loaders/PCDLoader.js";
 const useScene = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const sceneRef = useRef<THREE.Scene>();
+  const rendererRef = useRef<THREE.WebGLRenderer>();
 
   // instantiate a loader
   const loader = new PCDLoader();
@@ -21,12 +22,12 @@ const useScene = () => {
   };
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
+    if (typeof window !== "undefined" && !sceneRef.current) {
       sceneRef.current = new THREE.Scene();
+      rendererRef.current = new THREE.WebGLRenderer();
       const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-      const renderer = new THREE.WebGLRenderer();
-      renderer.setSize(window.innerWidth, window.innerHeight);
-      containerRef.current?.appendChild(renderer.domElement);
+      rendererRef.current.setSize(window.innerWidth, window.innerHeight);
+      containerRef.current?.appendChild(rendererRef.current.domElement);
       camera.position.z = 5;
 
       // load a resource
@@ -35,24 +36,25 @@ const useScene = () => {
         "https://segmentsai-prod.s3.eu-west-2.amazonaws.com/assets/admin-tobias/41089c53-efca-4634-a92a-0c4143092374.pcd",
         // called when the resource is loaded
         (points) => {
-          if (!sceneRef.current) return;
-          console.log("rendering! ");
+          if (!sceneRef.current || !rendererRef.current) return;
+
+          sceneRef.current.clear();
           sceneRef.current.add(points);
-          renderer.render(sceneRef.current, camera);
           renderRandomGeometry();
+          rendererRef.current.render(sceneRef.current, camera);
         },
         // called when loading is in progresses
-        function (xhr) {
+        (xhr) => {
           console.log((xhr.loaded / xhr.total) * 100 + "% loaded");
         },
         // called when loading has errors
-        function (error) {
+        (_err) => {
           console.log("An error happened");
         }
       );
     }
   }, []);
-  return containerRef;
+  return {containerRef, sceneRef, rendererRef};
 };
 
 export default useScene;

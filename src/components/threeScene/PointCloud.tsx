@@ -13,9 +13,3 @@ const pointCloudModel =
   };
 
 export default pointCloudModel;
-
-// const Model = () => {
-//   const obj = useLoader(PCDLoader, "assets/models/model.pcd");
-//   console.log(obj);
-//   return <primitive object={obj} scale={0.4} />;
-// };
