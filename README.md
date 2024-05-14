@@ -24,7 +24,28 @@ The `pages/api` directory is mapped to `/api/*`. Files in this directory are tre
 
 This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
-## Learn More
+# Developer notes:
+## Issues encountered:
+
+1. pcd file not loaded (because I was calling renderer.render before?)
+2. LoaderType not reconnised (I found an example with @react-three)
+3. loading the pcd twice because of React strict mode and attempts to remove the old scene failed 
+(so I also checked in the useEffect if scene is already loaded)
+image.png
+4. I couldn't find anything related to the  render method initially so I spent a lot of time not knowing why my cuboid wasn't appearing
+5. Adding a cube on the clicked position: I entered a small rabit hole trying to figure out how to render at the exact position. After changing the camera position to view the entire pcd file this turned out even more challenging. At some point I dropped it to finish the rest of the app, but then I got an ideea which worked for that specific camera position. However the zoom is disabled because the creation of the cubiods won't work properly after zoom (the formula for the mouse position needs to be recalculated for that)
+
+## Ideas to improve the asignment:
+1. Add some edges to the cuboids
+2. Only display the controls for a selected cuboid. Give option to click on cuboids for select and consider letting the user to also choose from a dropdown the cuboid he wants to edit. On hover highlight the cuboid in the scene (for this create an array with all the cuboids)
+3. Add handlers on cuboid click (selection, change position on drag)
+4. Allow zoom in and out and still properly calculate the mouse position on the scene.
+5. Allow entire scene rotation and take it into account when creating a new cuboid
+6. Edit cuboinds name. For a bigger project having a way to visualize all the cuboids and label them would be very usefull (ex a modal with a table containing all cuboinds)
+
+Note: Ended up investing more time than given in the asignment due to the issues encountered, and the fact that I didn't worked recently with 3d rendering and never with some of the features. However this was mainly for personal reasons: I wanted to send a code that is worth reviewing and discussing, but I enjoyed it a lot and it would have been a little downting for me to leave it at the 3 hours mark. 
+
+# (end of Developer notes) Learn More
 
 To learn more about Next.js, take a look at the following resources:
 
@@ -39,11 +60,3 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
 
-
-# Issues encountered:
-
-1. pcd file not loaded (because I was calling renderer.render before?)
-2. LoaderType not reconnised (I found an example with @react-three)
-3. loading the pcd twice because of React strict mode and attempts to remove the old scene failed 
-(so I also checked in the useEffect if scene is already loaded)
-image.png

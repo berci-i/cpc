@@ -5,11 +5,11 @@ import {useEffect, useRef} from "react";
 import {GUI} from "three/addons/libs/lil-gui.module.min.js";
 import {OrbitControls} from "three/examples/jsm/Addons.js";
 import {PCDLoader} from "three/addons/loaders/PCDLoader.js";
+import getCreateCuboid from "./useScene/getCreateCuboid";
 
 const useScene = ({isCreateEnabled}: {isCreateEnabled: boolean}) => {
-  const sceneRef = useRef<THREE.Scene>();
-  const cameraRef = useRef<THREE.Camera>();
   const isCreateEnabledRef = useRef<boolean>();
+  const sceneRef = useRef<THREE.Scene>();
   isCreateEnabledRef.current = isCreateEnabled;
 
   // instantiate a loader
@@ -17,24 +17,21 @@ const useScene = ({isCreateEnabled}: {isCreateEnabled: boolean}) => {
 
   useEffect(() => {
     if (typeof window !== "undefined" && !sceneRef.current) {
-      let camera: any, scene: any, renderer: any;
+      let camera: THREE.PerspectiveCamera, scene: THREE.Scene, renderer: THREE.WebGLRenderer;
 
-      const mousePosition = new THREE.Vector2();
-
-      let cube: any;
-
+      const gui = new GUI();
+      const folder = gui.addFolder("Edit cubes (expand any cube to edit id)");
+      folder.hide();
       const init = () => {
         renderer = new THREE.WebGLRenderer({antialias: true});
+        scene = new THREE.Scene();
+        camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 100000);
+        sceneRef.current = scene;
+
         renderer.setPixelRatio(window.devicePixelRatio);
         renderer.setSize(window.innerWidth, window.innerHeight);
         const sceneContainer = document.getElementById("scene-container") || document.body;
         sceneContainer.appendChild(renderer.domElement);
-
-        scene = new THREE.Scene();
-        camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 100000);
-
-        sceneRef.current = scene;
-        cameraRef.current = camera;
 
         camera.position.set(0, 0, 10);
         scene.add(camera);
@@ -43,6 +40,8 @@ const useScene = ({isCreateEnabled}: {isCreateEnabled: boolean}) => {
 
         // DISABLE ZOOM HERE (BUT IT MESSES WITH THE CLICK POSITION)
         controls.enableZoom = false;
+        // Disable rotation (for first version)
+        controls.enableRotate = false;
         controls.addEventListener("change", render); // use if there is no animation loop
         controls.minDistance = 0.5;
         controls.maxDistance = 10;
@@ -53,11 +52,6 @@ const useScene = ({isCreateEnabled}: {isCreateEnabled: boolean}) => {
           // "https://segmentsai-prod.s3.eu-west-2.amazonaws.com/assets/admin-tobias/41089c53-efca-4634-a92a-0c4143092374.pcd",
           function (points) {
             scene.add(points);
-
-            const gui = new GUI();
-
-            gui.add(points.material, "size", 0.001, 0.01).onChange(render);
-            gui.addColor(points.material, "color").onChange(render);
             gui.open();
 
             render();
@@ -65,7 +59,8 @@ const useScene = ({isCreateEnabled}: {isCreateEnabled: boolean}) => {
         );
 
         window.addEventListener("resize", onWindowResize);
-        renderer.domElement.addEventListener("click", onRendererClick);
+        const onClickScene = getCreateCuboid(isCreateEnabledRef, scene, render);
+        renderer.domElement.addEventListener("click", onClickScene);
       };
 
       const onWindowResize = () => {
@@ -74,27 +69,6 @@ const useScene = ({isCreateEnabled}: {isCreateEnabled: boolean}) => {
 
         renderer.setSize(window.innerWidth, window.innerHeight);
 
-        render();
-        console.log("resizing");
-      };
-
-      const onRendererClick = (e: MouseEvent) => {
-        const targetTagName = e.target && "tagName" in e.target ? (e.target.tagName as string) : "";
-        if (!isCreateEnabledRef.current || !scene || e.defaultPrevented || targetTagName.toLowerCase() === "button") return;
-
-        mousePosition.x = (e.clientX / window.innerWidth) * 2 - 1;
-        mousePosition.y = -(e.clientY / window.innerHeight) * 2 + 1;
-
-        const geometry = new THREE.BoxGeometry(0.2, 0.2, 0.2);
-        const material = new THREE.MeshBasicMaterial({color: 0x00ff00});
-        const cube = new THREE.Mesh(geometry, material);
-        cube.position.x = mousePosition.x;
-        cube.position.y = mousePosition.y;
-
-        cube.raycast = (...args) => {
-          console.log(args);
-        };
-        scene.add(cube);
         render();
       };
 
@@ -106,6 +80,7 @@ const useScene = ({isCreateEnabled}: {isCreateEnabled: boolean}) => {
       render();
     }
   }, []);
+  return {scene: sceneRef.current};
 };
 
 export default useScene;
