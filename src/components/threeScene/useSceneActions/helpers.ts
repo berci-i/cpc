@@ -11,7 +11,11 @@ export const getRandomColor = () => {
   return color;
 };
 
-export const addCuboidControls = (folder: GUI, cube: THREE.Mesh<THREE.BoxGeometry, THREE.MeshBasicMaterial, THREE.Object3DEventMap>, render: () => void) => {
+export const addCuboidControls = (
+  folder: GUI,
+  cube: THREE.Mesh<THREE.BoxGeometry, THREE.MeshBasicMaterial, THREE.Object3DEventMap>,
+  render: () => void
+) => {
   const editCuboidFolder = folder.addFolder(cube.name);
 
   const updateGeometry = (newGeometrySizes: {width?: number; height?: number; depth?: number}) => {
@@ -21,7 +25,9 @@ export const addCuboidControls = (folder: GUI, cube: THREE.Mesh<THREE.BoxGeometr
   };
 
   const updatePosition = (newPosition: {x?: number; y?: number; z?: number}) => {
-    const newPositionArr = Object.values({...cube.position, ...newPosition}).map((pos) => Number(pos));
+    const newPositionArr = Object.values({...cube.position, ...newPosition}).map((pos) =>
+      Number(pos)
+    );
     cube.position.set(newPositionArr[0], newPositionArr[1], newPositionArr[2]);
     render();
   };
@@ -30,7 +36,7 @@ export const addCuboidControls = (folder: GUI, cube: THREE.Mesh<THREE.BoxGeometr
     Object.entries(rotation).forEach((entry) => {
       const key = entry[0] as "x" | "y" | "z";
       const value = Number(entry[1]);
-      cube.rotation[key] = value; //THREE.MathUtils.degToRad(value);
+      cube.rotation[key] = value; // For degrees use : THREE.MathUtils.degToRad(value);
     });
     render();
   };
@@ -65,4 +71,18 @@ export const addCuboidControls = (folder: GUI, cube: THREE.Mesh<THREE.BoxGeometr
     .onChange((z) => updateRotation({z}));
 
   editCuboidFolder.close();
+};
+
+export const getNewCubePosition = (e: MouseEvent) => {
+  const mousePosition = new THREE.Vector2();
+  mousePosition.x = (e.clientX / window.innerWidth) * 2 - 1;
+  mousePosition.y = -(e.clientY / window.innerHeight) * 2 + 1;
+
+  // update the position for the camera zoom
+  // this is only working properly for 13 inch full screen. Forumla to be deducted based on screen size
+  // or even better investigate a solution with a ray caster
+  return {
+    x: mousePosition.x * 10,
+    y: mousePosition.y * 5,
+  };
 };

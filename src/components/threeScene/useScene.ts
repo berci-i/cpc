@@ -5,17 +5,15 @@ import {useEffect, useRef} from "react";
 import {GUI} from "three/addons/libs/lil-gui.module.min.js";
 import {OrbitControls} from "three/examples/jsm/Addons.js";
 import {PCDLoader} from "three/addons/loaders/PCDLoader.js";
-import getCreateCuboid from "./useScene/getCreateCuboid";
 
-const useScene = ({isCreateEnabled}: {isCreateEnabled: boolean}) => {
-  const isCreateEnabledRef = useRef<boolean>();
+const useScene = () => {
+  const rendererRef = useRef<THREE.WebGLRenderer>();
   const sceneRef = useRef<THREE.Scene>();
-  isCreateEnabledRef.current = isCreateEnabled;
-
-  // instantiate a loader
-  const loader = new PCDLoader();
+  const cameraRef = useRef<THREE.PerspectiveCamera>();
 
   useEffect(() => {
+    // instantiate a loader
+    const loader = new PCDLoader();
     if (typeof window !== "undefined" && !sceneRef.current) {
       let camera: THREE.PerspectiveCamera, scene: THREE.Scene, renderer: THREE.WebGLRenderer;
 
@@ -26,7 +24,9 @@ const useScene = ({isCreateEnabled}: {isCreateEnabled: boolean}) => {
         renderer = new THREE.WebGLRenderer({antialias: true});
         scene = new THREE.Scene();
         camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 100000);
+        rendererRef.current = renderer;
         sceneRef.current = scene;
+        cameraRef.current = camera;
 
         renderer.setPixelRatio(window.devicePixelRatio);
         renderer.setSize(window.innerWidth, window.innerHeight);
@@ -47,9 +47,9 @@ const useScene = ({isCreateEnabled}: {isCreateEnabled: boolean}) => {
         controls.maxDistance = 10;
 
         loader.load(
-          "segmentsai.pcd",
+          // "segmentsai.pcd",
           // "Zaghetto.pcd",
-          // "https://segmentsai-prod.s3.eu-west-2.amazonaws.com/assets/admin-tobias/41089c53-efca-4634-a92a-0c4143092374.pcd",
+          "https://segmentsai-prod.s3.eu-west-2.amazonaws.com/assets/admin-tobias/41089c53-efca-4634-a92a-0c4143092374.pcd",
           function (points) {
             scene.add(points);
             gui.open();
@@ -59,8 +59,6 @@ const useScene = ({isCreateEnabled}: {isCreateEnabled: boolean}) => {
         );
 
         window.addEventListener("resize", onWindowResize);
-        const onClickScene = getCreateCuboid(isCreateEnabledRef, scene, render);
-        renderer.domElement.addEventListener("click", onClickScene);
       };
 
       const onWindowResize = () => {
@@ -80,7 +78,8 @@ const useScene = ({isCreateEnabled}: {isCreateEnabled: boolean}) => {
       render();
     }
   }, []);
-  return {scene: sceneRef.current};
+
+  return {scene: sceneRef.current, camera: cameraRef.current, renderer: rendererRef.current};
 };
 
 export default useScene;
