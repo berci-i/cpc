@@ -16,6 +16,13 @@ image.png
 4. Allow zoom in and out and still properly calculate the mouse position on the scene.
 5. Allow entire scene rotation and take it into account when creating a new cuboid
 6. Edit cuboinds name. For a bigger project having a way to visualize all the cuboids and label them would be very usefull (ex a modal with a table containing all cuboinds)
+7. For a real react app the following code should be considered for improves:
+```
+const sceneContainer = document.getElementById("scene-container") || document.body;
+        sceneContainer.appendChild(renderer.domElement);
+```
+This is beucase is not a good practice to update state using DOM manipulation (beucause react won't be aware of that element and won't be able to properly update it). 
+However for first version this should be fine, since the scene shouldn't be dependent on react re-renders but on the props (like renderer, scene, camera, etc.) and also the context makes sure that, if something gets reinitialized the hole content will be re-rendered.  
 
 ## (end of Developer notes) 
 
