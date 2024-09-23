@@ -1,6 +1,7 @@
-## A 3D playground using Three.js and React/Next.js to manipulate cuboids in a scene
+## 3D Cuboids Playground
+This is a 3D playground using Three.js and React/Next.js to manipulate cuboids in a scene
 
-# Developer notes:
+## Developer notes:
 ## Issues encountered:
 
 1. Loading pcd file (because renderer.render was called before)
