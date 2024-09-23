@@ -1,13 +1,11 @@
 # Developer notes:
 ## Issues encountered:
 
-1. pcd file not loaded (because I was calling renderer.render before?)
-2. LoaderType not reconnised (I found an example with @react-three)
+1. Loading pcd file (because renderer.render was called before)
+2. LoaderType not reconnised 
 3. loading the pcd twice because of React strict mode and attempts to remove the old scene failed 
-(so I also checked in the useEffect if scene is already loaded)
-image.png
-4. I couldn't find anything related to the  render method initially so I spent a lot of time not knowing why my cuboid wasn't appearing
-5. Adding a cube on the clicked position: I entered a small rabit hole trying to figure out how to render at the exact position. After changing the camera position to view the entire pcd file this turned out even more challenging. At some point I dropped it to finish the rest of the app, but then I got an ideea which worked for that specific camera position. However the zoom is disabled because the creation of the cubiods won't work properly after zoom, or for screen resize (the formula for the mouse position needs to be recalculated for that or overall improved -> an ideea would be a raycaster related implementation)
+4. I couldn't find anything related to the  render method initially => the cuboid wasn't appearing
+5. Adding a cube on the clicked position: After changing the camera position to view the entire pcd file this turned out even more challenging. Added a fixed which works for a specific camera position. However the zoom is disabled because the creation of the cubiods won't work properly after zoom, or for screen resize (the formula for the mouse position needs to be recalculated for that or overall improved -> an ideea would be a raycaster implementation)
 
 ## Ideas to improve the asignment:
 1. Add some edges to the cuboids
@@ -25,8 +23,6 @@ This is beucase is not a good practice to update state using DOM manipulation (b
 However for first version this should be fine, since the scene shouldn't be dependent on react re-renders but on the props (like renderer, scene, camera, etc.) and also the context makes sure that, if something gets reinitialized the hole content will be re-rendered.  
 
 ## (end of Developer notes) 
-
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
 
