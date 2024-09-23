@@ -1,3 +1,5 @@
+## A 3D playground using Three.js and React/Next.js to manipulate cuboids in a scene
+
 # Developer notes:
 ## Issues encountered:
 
