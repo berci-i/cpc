@@ -3,21 +3,21 @@ This is a 3D playground using Three.js and React/Next.js to manipulate cuboids i
 
 
 ## Developer notes:
-### 1. Issues encountered:
-1.1. Loading pcd file (because renderer.render was called before)
-1.2. LoaderType not recognised 
-1.3. loading the pcd twice because of React strict mode and attempts to remove the old scene failed 
-1.4. I couldn't find anything related to the  render method initially => the cuboid wasn't appearing
-1.5. Adding a cube on the clicked position: After changing the camera position to view the entire pcd file this turned out even more challenging. Added a fixed which works for a specific camera position. However the zoom is disabled because the creation of the cubiods won't work properly after zoom, or for screen resize (the formula for the mouse position needs to be recalculated for that or overall improved -> an ideea would be a raycaster implementation)
+### I. Issues encountered:
+1. Loading pcd file (because renderer.render was called before)
+2. LoaderType not recognised 
+3. loading the pcd twice because of React strict mode and attempts to remove the old scene failed 
+4. I couldn't find anything related to the  render method initially => the cuboid wasn't appearing
+5. Adding a cube on the clicked position: After changing the camera position to view the entire pcd file this turned out even more challenging. Added a fixed which works for a specific camera position. However the zoom is disabled because the creation of the cubiods won't work properly after zoom, or for screen resize (the formula for the mouse position needs to be recalculated for that or overall improved -> an ideea would be a raycaster implementation)
 
-### 2. Ideas to improve the assignment:
-2.1. Add some edges to the cuboids
-2.2. Only display the controls for a selected cuboid. Give option to click on cuboids for select and consider letting the user to also choose from a dropdown the cuboid he wants to edit. On hover highlight the cuboid in the scene (for this create an array with all the cuboids)
-2.3. Add handlers on cuboid click (selection, change position on drag)
-2.4. Allow zoom in and out while still properly calculating the mouse position on the scene.
-2.5. Allow entire scene rotation and take it into account when creating a new cuboid
-2.6. Edit cuboinds name. For a bigger project having a way to visualize all the cuboids and label them would be very usefull (ex a modal with a table containing all cuboinds)
-2.7. For a real react app the following code should be considered for improves:
+### II. Ideas to improve the assignment:
+1. Add some edges to the cuboids
+2. Only display the controls for a selected cuboid. Give option to click on cuboids for select and consider letting the user to also choose from a dropdown the cuboid he wants to edit. On hover highlight the cuboid in the scene (for this create an array with all the cuboids)
+3. Add handlers on cuboid click (selection, change position on drag)
+4. Allow zoom in and out while still properly calculating the mouse position on the scene.
+5. Allow entire scene rotation and take it into account when creating a new cuboid
+6. Edit cuboinds name. For a bigger project having a way to visualize all the cuboids and label them would be very usefull (ex a modal with a table containing all cuboinds)
+7. For a real react app the following code should be considered for improves:
 ```
 const sceneContainer = document.getElementById("scene-container") || document.body;
         sceneContainer.appendChild(renderer.domElement);
