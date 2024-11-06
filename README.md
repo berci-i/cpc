@@ -6,25 +6,25 @@ This is a 3D playground using Three.js and React/Next.js to manipulate cuboids i
 
 ###  Ideas to improve:
 1. Add some edges to the cuboids
-2. Only display the controls for a selected cuboid. Give option to click on cuboids for select and consider letting the user to also choose from a dropdown the cuboid he wants to edit. On hover highlight the cuboid in the scene (for this create an array with all the cuboids)
+2. Only display the controls for a selected cuboid. Give the option to click on cuboids for selection and consider letting the user to also choose from a dropdown the cuboid he wants to edit. On hover highlight the cuboid in the scene (for this create an array with all the cuboids)
 3. Add handlers on cuboid click (selection, change position on drag)
 4. Allow zoom in and out while still properly calculating the mouse position on the scene.
 5. Allow entire scene rotation and take it into account when creating a new cuboid
-6. Edit cuboinds name. For a bigger project having a way to visualize all the cuboids and label them would be very usefull (ex a modal with a table containing all cuboinds)
-7. For a real react app the following code should be considered for improves:
+6. Edit cuboinds name. For a bigger project having a way to visualize all the cuboids and label them would be very useful (ex a modal with a table containing all cuboids)
+7. For a real react app the following code should be considered for improvement:
 ```
 const sceneContainer = document.getElementById("scene-container") || document.body;
         sceneContainer.appendChild(renderer.domElement);
 ```
 This is beucase is not a good practice to update state using DOM manipulation (beucause react won't be aware of that element and won't be able to properly update it). 
-However for first version this should be fine, since the scene shouldn't be dependent on react re-renders but on the props (like renderer, scene, camera, etc.) and also the context makes sure that, if something gets reinitialized the hole content will be re-rendered.  
+However for the first version, this should be fine, since the scene shouldn't be dependent on react re-renders but on the props (like renderer, scene, camera, etc.), and also the context makes sure that, if something gets reinitialized the hole content will be re-rendered.  
 
-### I. Issues encountered:
+### Challenges encountered:
 1. Loading pcd file (because renderer.render was called before)
 2. LoaderType not recognised 
 3. loading the pcd twice because of React strict mode and attempts to remove the old scene failed 
 4. I couldn't find anything related to the  render method initially => the cuboid wasn't appearing
-5. Adding a cube on the clicked position: After changing the camera position to view the entire pcd file this turned out even more challenging. Added a fixed which works for a specific camera position. However the zoom is disabled because the creation of the cubiods won't work properly after zoom, or for screen resize (the formula for the mouse position needs to be recalculated for that or overall improved -> an ideea would be a raycaster implementation)
+5. Adding a cube on the clicked position: After changing the camera position to view the entire pcd file this turned out even more challenging. Added a fixed which works for a specific camera position. However the zoom is disabled because the creation of the cuboids won't work properly after Zoom, or for screen resize (the formula for the mouse position needs to be recalculated for that or overall improved -> an idea would be a raycaster implementation)
 
 ## (end of Developer notes) 
 
