@@ -3,14 +3,8 @@ This is a 3D playground using Three.js and React/Next.js to manipulate cuboids i
 
 
 ## Developer notes:
-### I. Issues encountered:
-1. Loading pcd file (because renderer.render was called before)
-2. LoaderType not recognised 
-3. loading the pcd twice because of React strict mode and attempts to remove the old scene failed 
-4. I couldn't find anything related to the  render method initially => the cuboid wasn't appearing
-5. Adding a cube on the clicked position: After changing the camera position to view the entire pcd file this turned out even more challenging. Added a fixed which works for a specific camera position. However the zoom is disabled because the creation of the cubiods won't work properly after zoom, or for screen resize (the formula for the mouse position needs to be recalculated for that or overall improved -> an ideea would be a raycaster implementation)
 
-### II. Ideas to improve the assignment:
+###  Ideas to improve:
 1. Add some edges to the cuboids
 2. Only display the controls for a selected cuboid. Give option to click on cuboids for select and consider letting the user to also choose from a dropdown the cuboid he wants to edit. On hover highlight the cuboid in the scene (for this create an array with all the cuboids)
 3. Add handlers on cuboid click (selection, change position on drag)
@@ -24,6 +18,13 @@ const sceneContainer = document.getElementById("scene-container") || document.bo
 ```
 This is beucase is not a good practice to update state using DOM manipulation (beucause react won't be aware of that element and won't be able to properly update it). 
 However for first version this should be fine, since the scene shouldn't be dependent on react re-renders but on the props (like renderer, scene, camera, etc.) and also the context makes sure that, if something gets reinitialized the hole content will be re-rendered.  
+
+### I. Issues encountered:
+1. Loading pcd file (because renderer.render was called before)
+2. LoaderType not recognised 
+3. loading the pcd twice because of React strict mode and attempts to remove the old scene failed 
+4. I couldn't find anything related to the  render method initially => the cuboid wasn't appearing
+5. Adding a cube on the clicked position: After changing the camera position to view the entire pcd file this turned out even more challenging. Added a fixed which works for a specific camera position. However the zoom is disabled because the creation of the cubiods won't work properly after zoom, or for screen resize (the formula for the mouse position needs to be recalculated for that or overall improved -> an ideea would be a raycaster implementation)
 
 ## (end of Developer notes) 
 
